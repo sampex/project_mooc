@@ -25,6 +25,9 @@ class ResultsView(generic.DetailView):
     template_name = 'polls/results.html'
 
 #@login_required FIX for insecure design
+# Csrf flaw
+@csrf_exempt
+# changing csrf_exempt to csrf_protect enables csrf protection
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
 
@@ -34,7 +37,7 @@ def vote(request, question_id):
     # Implement proper authentication and authorization checks to prevent this
 
     try:
-        # Injection flaw
+        # Broken access control flaw
         choice_id = request.POST.get('choice', None)
         if choice_id is None:
             raise Choice.DoesNotExist
