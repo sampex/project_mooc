@@ -38,12 +38,25 @@ def vote(request, question_id):
 
     try:
         # Broken access control flaw
+        # The choice_id is directly retrieved from POST data without validation
         choice_id = request.POST.get('choice', None)
+        
+        # Flaw: No validation is performed on choice_id
+        # If choice_id is None or not a valid integer, it could lead to unexpected behavior
         if choice_id is None:
             raise Choice.DoesNotExist
+
         selected_choice = question.choice_set.get(pk=choice_id)
-        #fix to it
-        #selected_choice = question.choice_set.get(pk=request.POST['choice'])
+        
+        # Fix to this flaw:
+        
+        # if not choice_id.isdigit():  # Check if choice_id is a digit
+        #     raise ValidationError("Invalid choice ID")
+        
+        # choice_id = int(choice_id)  # Convert choice_id to an integer
+        
+        # selected_choice = question.choice_set.get(pk=choice_id)
+    
     except (KeyError, Choice.DoesNotExist):
         # Redisplay the question voting form.
         return render(request, 'polls/detail.html', {
