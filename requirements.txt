@@ -1,1 +1,1 @@
-Django==2.2.0
+Django==2.2.0  #Flaw 1: outdated version, fix to this is to update version to newest stable version
