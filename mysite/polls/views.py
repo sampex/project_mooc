@@ -37,8 +37,6 @@ def vote(request, question_id):
     # Implement proper authentication and authorization checks to prevent this
 
     try:
-        # Broken access control flaw
-        # The choice_id is directly retrieved from POST data without validation
         choice_id = request.POST.get('choice', None)
         
         # Flaw: No validation is performed on choice_id
